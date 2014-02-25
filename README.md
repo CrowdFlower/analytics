@@ -1,0 +1,112 @@
+# Analytics
+
+Analytics provides helpers for using segment.io in Rails and ... wait for it ... MERB :(  Currently, by default this gem supports: Google Analytics, Hubspot, Mixpanel, Intercom, and optionally Olark via a custom build of segment.io
+
+## Usage
+
+```ruby
+gem 'analytics', git: "git://github.com/CrowdFlower/analytics.git"
+```
+
+Now in the header of your application:
+
+```ruby
+<%= Analytics.header(
+  user_id: 1, 
+  user_payload: {
+    email: "foo@bar.com",
+    name: "Foo Bar",
+    plan: "basic",
+    created: "2014 10 22 12:23:14",
+    balance: "90.32"
+  }, 
+  include_olark?: true,
+  intercom_secret: "A2c4e0B1...",
+  analytics_url: "//abcdefg.cloudfront.net/analytics.min.js.gz" //optional custom analytics build url
+) %>
+```
+
+And anywhere in your application you can call track:
+
+```ruby
+<%= Analytics.track("something", {some_property: "rad"}, {tag: true}) %>
+```
+
+This will generate the proper javascript within a script tag.  If you're already in a script tag when you call it you can omit `tag: true`.
+
+You can also call `trackForm` or `trackLink` and pass in a selector as the first parameter, this assumes you have jQuery available on the page.
+
+## Custom build of segment.io/analytics.js
+
+You can make a custom build of segment.io's 
+
+1. Fork https://github.com/segmentio/analytics.js
+2. Fork https://github.com/segmentio/analytics.js-integrations
+3. Modify index.js in the forked integrations repo to include only the integrations you need, i.e.:
+  ```ruby
+  var integrations = ["adwords","google-analytics","hubspot","intercom","mixpanel","olark","optimizely","rollbar"];
+  ```
+4. Modify the scripts portion of component.json in the integrations repo to only include the integrations you need.
+5. Modify component.json of the analytics.js repo to point to the master branch of your forked integrations repo: i.e.
+  "CrowdFlower/analytics.js-integrations": "master"
+6. Push your changes to github.
+7. Run `make` from the analytics.js repo
+8. To enable async loading replace the following at the end of the analytics.js:
+  ```js
+  if (typeof exports == "object") {
+    module.exports = require("analytics");
+  } else if (typeof define == "function" && define.amd) {
+    define([], function(){ return require("analytics"); });
+  } else {
+    this["analytics"] = require("analytics");
+  }
+  ```
+  With the following:
+
+  ```js
+  var analytics =  require("analytics");
+
+  analytics.initialize({
+    'Google Analytics': {
+      trackingId: 'UA-3841988-12',
+      domain: 'crowdflower.com',
+      ignoreReferrer: 'crowdflower.com'
+    },
+    'Mixpanel': {
+      token: '6391ff7ebb759bbb796f8a74d9229e68',
+      people: true
+    },
+    'HubSpot': {
+      portalId:'346378'
+    },
+    'Intercom': {
+      appId: '900ddb390526bf805ee5f5b18b44b1bded27420d'
+    }
+  })
+  
+  //Replay any queued analytics calls
+  while (window.analytics && window.analytics.length > 0) {
+    var args = window.analytics.shift();
+    var method = args.shift();
+    if (analytics[method]) analytics[method].apply(analytics, args);
+  }
+  window.analytics = analytics;
+  ```
+9. Minify your new analytics.js and gzip.
+10. Throw it into S3, set the Content-Type to `application/x-javascript` and the Content-Encoding to `gzip`
+11. Put cloudfront in front of it for extra awesome.
+
+## Contributing to analytics
+ 
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
+* Fork the project.
+* Start a feature/bugfix branch.
+* Commit and push until you are happy with your contribution.
+* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+## Copyright
+
+Copyright (c) 2014 Chris Van Pelt. See LICENSE.txt for
+further details.

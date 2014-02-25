@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "analytics"
   gem.homepage = "http://github.com/vanpelt/analytics"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Helpers for segment.io's analytics.js}
+  gem.description = %Q{This gem is a simple set of helpers that make it easy to include and track events using a stock or custom build of analytics.js}
   gem.email = "vanpelt@gmail.com"
   gem.authors = ["Chris Van Pelt"]
   # dependencies defined in Gemfile
