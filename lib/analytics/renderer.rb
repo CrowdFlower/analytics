@@ -11,7 +11,7 @@ module Analytics
     end
 
     def render
-      @erubis.result(binding)
+      make_safe @erubis.result(binding)
     end
   end
 end
