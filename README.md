@@ -1,11 +1,18 @@
 # Analytics
 
-Analytics provides helpers for using segment.io in Rails and ... wait for it ... MERB :(  Currently, by default this gem supports: Google Analytics, Hubspot, Mixpanel, Intercom, and optionally Olark via a custom build of segment.io
+Analytics provides helpers for using segment.io in Rails and ... wait for it ... MERB :(  It supports both a custom build of the opensource segment.io project or using the paid service.  If the paid service is used, this also provides the ruby serverside gem.
 
 ## Usage
 
 ```ruby
 gem 'analytics', git: "git://github.com/CrowdFlower/analytics.git"
+```
+
+You must call `Analytics.init` for any of the helpers to return anything.  Generally it's a good idea to only call Analytics.init in your production environment, this way way you don't track testing or developement events.
+
+```ruby
+Analytics.init(:secret => "abcdefg") #Uses the paid version of segment.io
+Analytics.init(:url => "//something.cloudfront.com/custom_build.js.gz") #Uses your own custom build of segment.io
 ```
 
 Now in the header of your application:
@@ -20,9 +27,8 @@ Now in the header of your application:
     created: "2014 10 22 12:23:14",
     balance: "90.32"
   }, 
-  include_olark?: true,
-  intercom_secret: "A2c4e0B1...",
-  analytics_url: "//abcdefg.cloudfront.net/analytics.min.js.gz" //optional custom analytics build url
+  exclude: ['Olark'],
+  intercom_secret: "A2c4e0B1..."
 ) %>
 ```
 
@@ -36,9 +42,19 @@ This will generate the proper javascript within a script tag.  If you're already
 
 You can also call `trackForm` or `trackLink` and pass in a selector as the first parameter, this assumes you have jQuery available on the page.
 
+## Serverside tracking
+
+If the Analytics is initialized with `:secret => "something"` the [analytics-ruby gem](https://github.com/segmentio/analytics-ruby) is initialized and exposed via `Analytics.ss`.
+
+```ruby
+Analytics.ss.track(:event => "Spent Money", :user_id => 32, :properties => {:revenue => 300})
+```
+
+If `Analytics.init` was never called, all calls to `Analytics.ss.whatever` will return false. 
+
 ## Custom build of segment.io/analytics.js
 
-You can make a custom build of segment.io's 
+You can make a custom build of segment.io's javascript library, however it's a pain in the ass and you can use serverside tracking. 
 
 1. Fork https://github.com/segmentio/analytics.js
 2. Fork https://github.com/segmentio/analytics.js-integrations
