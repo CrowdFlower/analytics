@@ -7,7 +7,7 @@ describe "Analytics" do
     before(:each) { Analytics.init(:url => "//test.com") }
 
     it "renders header" do
-      expect(Analytics.header({})).to match(/analytics\.load/)
+      expect(Analytics.header({})).to match(/analytics\.page/)
     end
 
     it "renders url" do
