@@ -32,6 +32,8 @@ Now in the header of your application:
 ) %>
 ```
 
+The important options are in the sample payload above.  If a user isn't logged in, don't provide the `user_id` or `user_payload`.  If you need to disable an integration, specify it in the `exclude` array.  If you're using intercom, you can provide the `intercom_secret`.
+
 And anywhere in your application you can call track:
 
 ```ruby
