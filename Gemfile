@@ -1,5 +1,6 @@
 source "http://rubygems.org"
 gem "erubis"
+gem "faraday", "< 0.9.0"
 gem "analytics-ruby", "~> 0.6.0"
 
 # Add dependencies to develop your gem here.
