@@ -3,9 +3,8 @@
   
   window._aopts = <%= opts.global_options.to_json %>;
   <%- if opts.intercom_secret -%>
-  _aopts.Intercom = {userHash: "<%= OpenSSL::HMAC.hexdigest("sha256", opts.intercom_secret.to_json, opts.user_id.to_json) %>"};
+  _aopts.Intercom = {userHash: "<%= OpenSSL::HMAC.hexdigest("sha256", opts.intercom_secret, opts.user_id) %>"};
   <%- end -%>
-  analytics.load();
   analytics.ready(function () {
     if(_aopts.exclude && _aopts.exclude.length > 0) {
       _aopts.providers = {'All': false}
