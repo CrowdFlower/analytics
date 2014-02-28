@@ -15,11 +15,11 @@ module Analytics
     end
     
     def trackLink(selector, event, properties, opts = {})
-      wrapper track(event, properties, {thing: "Link", selector: selector}.merge(opts))
+      wrapper track(event, properties, {:thing => "Link", :selector => selector}.merge(opts))
     end
     
     def trackForm(selector, event, properties, opts = {})
-      wrapper track(event, properties, {thing: "Form", selector: selector}.merge(opts))
+      wrapper track(event, properties, {:thing => "Form", :selector => selector}.merge(opts))
     end
 
     protected

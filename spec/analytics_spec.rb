@@ -55,53 +55,53 @@ describe "Analytics" do
     before(:each) { Analytics.init(:url => "//test.com") }
 
     it "identify" do
-      expect(Analytics.identify(1,{rad:1})).to eq("analytics.identify(1, {\"rad\":1}, _aopts);")
+      expect(Analytics.identify(1,{:rad => 1})).to eq("analytics.identify(1, {\"rad\":1}, _aopts);")
     end
 
     it "group" do
-      expect(Analytics.group(1,{rad:1})).to eq("analytics.group(1, {\"rad\":1}, _aopts);")
+      expect(Analytics.group(1,{:rad => 1})).to eq("analytics.group(1, {\"rad\":1}, _aopts);")
     end
 
     it "track" do
-      expect(Analytics.track("foo",{rad:1})).to eq("analytics.track(\"foo\", {\"rad\":1}, _aopts);")
+      expect(Analytics.track("foo",{:rad => 1})).to eq("analytics.track(\"foo\", {\"rad\":1}, _aopts);")
     end
 
     it "trackLink" do
-      expect(Analytics.trackLink(".foo", "bar", {rad:1})).to eq("analytics.trackLink(jQuery(\".foo\"), \"bar\", {\"rad\":1}, _aopts);")
+      expect(Analytics.trackLink(".foo", "bar", {:rad => 1})).to eq("analytics.trackLink(jQuery(\".foo\"), \"bar\", {\"rad\":1}, _aopts);")
     end
 
     it "trackForm" do
-      expect(Analytics.trackForm(".foo", "bar", {rad:1})).to eq("analytics.trackForm(jQuery(\".foo\"), \"bar\", {\"rad\":1}, _aopts);")
+      expect(Analytics.trackForm(".foo", "bar", {:rad => 1})).to eq("analytics.trackForm(jQuery(\".foo\"), \"bar\", {\"rad\":1}, _aopts);")
     end
 
     it "tracks with script tag" do
-      expect(Analytics.track("foo",{rad:1}, {tag:true})).to match(/^<script.+analytics.track/m)
+      expect(Analytics.track("foo",{:rad => 1}, {:tag => true})).to match(/^<script.+analytics.track/m)
     end
   end
 
   describe "non-initialized helpers" do
     it "identify" do
-      expect(Analytics.identify(1,{rad:1})).to eq("")
+      expect(Analytics.identify(1,{:rad => 1})).to eq("")
     end
 
     it "group" do
-      expect(Analytics.group(1,{rad:1})).to eq("")
+      expect(Analytics.group(1,{:rad => 1})).to eq("")
     end
 
     it "track" do
-      expect(Analytics.track("foo",{rad:1})).to eq("")
+      expect(Analytics.track("foo",{:rad => 1})).to eq("")
     end
 
     it "trackLink" do
-      expect(Analytics.trackLink(".foo", "bar", {rad:1})).to eq("")
+      expect(Analytics.trackLink(".foo", "bar", {:rad => 1})).to eq("")
     end
 
     it "trackForm" do
-      expect(Analytics.trackForm(".foo", "bar", {rad:1})).to eq("")
+      expect(Analytics.trackForm(".foo", "bar", {:rad => 1})).to eq("")
     end
 
     it "tracks with script tag" do
-      expect(Analytics.track("foo",{rad:1}, {tag:true})).to match("")
+      expect(Analytics.track("foo",{:rad => 1}, {:tag => true})).to match("")
     end
   end
 
