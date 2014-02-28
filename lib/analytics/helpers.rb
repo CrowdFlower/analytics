@@ -3,6 +3,10 @@ module Analytics
     def identify(user_id, payload)
       wrapper "analytics.identify(#{user_id.to_json}, #{payload.to_json}, _aopts);"
     end
+
+    def group(company_id, payload)
+      wrapper "analytics.group(#{company_id.to_json}, #{payload.to_json}, _aopts);"
+    end
     
     def track(event, properties, opts = {})
       selector = opts[:selector] ? "jQuery(\"#{opts[:selector]}\"), " : ""

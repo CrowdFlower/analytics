@@ -8,11 +8,15 @@ Analytics provides helpers for using segment.io in Rails and ... wait for it ...
 gem 'analytics', git: "git://github.com/CrowdFlower/analytics.git"
 ```
 
-You must call `Analytics.init` for any of the helpers to return anything.  Generally it's a good idea to only call Analytics.init in your production environment, this way way you don't track testing or developement events.
+You must call `Analytics.init` for any of the helpers to return anything.  Generally it's a good idea to only call Analytics.init in your production environment, this way way you don't track testing or development events.  If you're running unicorn, you'll need to call it in an `after_fork` block.  To facilitate configuration, we also provide an `Analytics.configure` method that can be called in an initializer which will allow you to call `Analytics.init` without any params in `unicorn.rb`.  You can also access the options set by configure by calling `Analytics.options`.
 
 ```ruby
 Analytics.init(:secret => "abcdefg") #Uses the paid version of segment.io
 Analytics.init(:url => "//something.cloudfront.com/custom_build.js.gz") #Uses your own custom build of segment.io
+
+Analytics.configure(:secret => "abcdefg", :intercom_secret => "A2c4e0B1...") #In an initializer
+Analytics.init #In unicorn.rb
+Analytics.options[:intercom_secret] #Wherever you need secrets 
 ```
 
 Now in the header of your application:

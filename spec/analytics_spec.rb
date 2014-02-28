@@ -58,6 +58,10 @@ describe "Analytics" do
       expect(Analytics.identify(1,{rad:1})).to eq("analytics.identify(1, {\"rad\":1}, _aopts);")
     end
 
+    it "group" do
+      expect(Analytics.group(1,{rad:1})).to eq("analytics.group(1, {\"rad\":1}, _aopts);")
+    end
+
     it "track" do
       expect(Analytics.track("foo",{rad:1})).to eq("analytics.track(\"foo\", {\"rad\":1}, _aopts);")
     end
@@ -66,7 +70,7 @@ describe "Analytics" do
       expect(Analytics.trackLink(".foo", "bar", {rad:1})).to eq("analytics.trackLink(jQuery(\".foo\"), \"bar\", {\"rad\":1}, _aopts);")
     end
 
-    it "trackLink" do
+    it "trackForm" do
       expect(Analytics.trackForm(".foo", "bar", {rad:1})).to eq("analytics.trackForm(jQuery(\".foo\"), \"bar\", {\"rad\":1}, _aopts);")
     end
 
@@ -80,6 +84,10 @@ describe "Analytics" do
       expect(Analytics.identify(1,{rad:1})).to eq("")
     end
 
+    it "group" do
+      expect(Analytics.group(1,{rad:1})).to eq("")
+    end
+
     it "track" do
       expect(Analytics.track("foo",{rad:1})).to eq("")
     end
@@ -88,7 +96,7 @@ describe "Analytics" do
       expect(Analytics.trackLink(".foo", "bar", {rad:1})).to eq("")
     end
 
-    it "trackLink" do
+    it "trackForm" do
       expect(Analytics.trackForm(".foo", "bar", {rad:1})).to eq("")
     end
 
@@ -122,6 +130,11 @@ describe "Analytics" do
     it "sets url from url" do
       Analytics.init(:url => "//whatever.com")
       expect(Analytics.url).to match(/\/whatever/)
+    end
+
+    it "supports configure" do
+      Analytics.configure(:secret => "abcdefg")
+      expect(Analytics.url).to match(/\/abcdefg\//)
     end
   end
 end

@@ -10,17 +10,24 @@ module Analytics
   extend Analytics::Helpers
 
   def self.url
-    if @key
-      "//d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/#{@key}/analytics.min.js"
+    if options[:secret]
+      "//d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/#{options[:secret]}/analytics.min.js"
     else
-      @url
+      options[:url]
     end
   end
 
-  def self.init(options = {})
-    @key = options[:secret]
-    @url = options.delete(:url)
-    AnalyticsRuby.init(options) if @key
+  def self.configure(options)
+    @options = options
+  end
+
+  def self.options
+    @options || {}
+  end
+
+  def self.init(option_override = nil)
+    @options = option_override if option_override
+    AnalyticsRuby.init(options) if options[:secret]
   end
 
   def self.header(opts)
@@ -32,8 +39,7 @@ module Analytics
   end
 
   def self.reset!
-    @key = nil
-    @url = nil
+    @options = nil
     AnalyticsRuby.instance_variable_set(:@client, nil)
   end
 end
