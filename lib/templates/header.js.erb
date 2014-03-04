@@ -8,9 +8,9 @@
   analytics.ready(function () {
     if(_aopts.exclude && _aopts.exclude.length > 0) {
       _aopts.providers = {'All': false}
-      jQuery.each(analytics.Integrations, function(key, value) {
+      for(key in analytics.Integrations) {
         _aopts.providers[key] = _aopts.exclude.indexOf(key) == -1
-      })
+      }
     }
     <%- if opts.exclude && opts.exclude.include?('Olark') -%>
     if(typeof(olark) == "function") {
