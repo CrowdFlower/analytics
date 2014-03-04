@@ -9,7 +9,9 @@
     if(_aopts.exclude && _aopts.exclude.length > 0) {
       _aopts.providers = {'All': false}
       for(key in analytics.Integrations) {
-        _aopts.providers[key] = _aopts.exclude.indexOf(key) == -1
+        if(analytics.Integrations.hasOwnProperty(key)) {
+          _aopts.providers[key] = _aopts.exclude.indexOf(key) == -1
+        }
       }
     }
     <%- if opts.exclude && opts.exclude.include?('Olark') -%>
