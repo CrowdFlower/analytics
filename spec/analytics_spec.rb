@@ -18,7 +18,7 @@ describe "Analytics" do
       Analytics.init(:secret => "abcdefg")
       expect(Analytics.header({})).to match(/\/abcdefg\//)
     end
-  
+
     it "renders intercom" do
       header = Analytics.header({:intercom_secret => "foo", :user_id => 1})
       expect(header).to match(/userHash: "/)
@@ -108,6 +108,20 @@ describe "Analytics" do
   describe "server side" do
     it "doesnt blow up if not initialized" do
       expect(Analytics.ss.track(:user_id => 1, :event => "Shit")).to be_false
+    end
+
+    it "supports track and identity" do
+      class User
+        attr_reader :id, :identity_payload
+        def initialize(id, payload)
+          @id = id
+          @identity_payload = payload
+        end
+      end
+      user = User.new(1, {})
+      Analytics.ss.should_receive(:identify).with(:user_id => 1, :traits => {})
+      Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar"}, :user_id => 1)
+      expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user))
     end
 
     it "is initialized with secret" do

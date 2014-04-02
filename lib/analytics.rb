@@ -5,6 +5,7 @@ require 'erubis'
 require 'analytics-ruby'
 require 'analytics/helpers'
 require 'analytics/renderer'
+require 'analytics/patches'
 
 module Analytics
   extend Analytics::Helpers
