@@ -112,15 +112,16 @@ describe "Analytics" do
 
     it "supports track and identity" do
       class User
-        attr_reader :id, :identity_payload
+        attr_reader :id, :identity_payload, :email
         def initialize(id, payload)
           @id = id
+          @email = "#{id}@crowdflower.com"
           @identity_payload = payload
         end
       end
       user = User.new(1, {})
-      Analytics.ss.should_receive(:identify).with(:user_id => 1, :traits => {})
-      Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar"}, :user_id => 1)
+      Analytics.ss.should_receive(:identify).with(:user_id => user.id, :traits => {})
+      Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id)
       expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user))
     end
 
