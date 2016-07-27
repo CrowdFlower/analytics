@@ -1,6 +1,6 @@
 module Analytics
   module Helpers
-    def alias_id(id)
+    def alias(id)
       wrapper "analytics.alias('#{id}');"
     end
 

@@ -22,7 +22,8 @@
   });
   analytics.page(_aopts);
   <% if opts.user_id && opts.user_payload -%>
-  <%= alias_id(opts.user_id) if opts.distinct_id -%>
-  <%= identify(opts.distinct_id || opts.user_id, opts.user_payload) %>
+  <% id = opts.previous_id || opts.user_id -%>
+  <%= self.identify(id, opts.user_payload) %>
+  <%= self.alias(opts.user_id) if opts.previous_id %>
   <% end %>
 </script>
