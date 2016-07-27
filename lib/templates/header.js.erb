@@ -1,6 +1,6 @@
 <script type="text/javascript">
   window.analytics||(window.analytics=[]),window.analytics.methods=["initialize","identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;window.analytics.methods.length>i;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)};(function(){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src="<%= opts.analytics_url %>";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)})();
-  
+
   window._aopts = <%= opts.global_options.to_json %>;
   <%- if opts.intercom_secret -%>
   _aopts.Intercom = {userHash: "<%= OpenSSL::HMAC.hexdigest("sha256", opts.intercom_secret, opts.user_id.to_s) %>"};
@@ -21,5 +21,8 @@
     <%- end -%>
   });
   analytics.page(_aopts);
-  <%= identify(opts.user_id, opts.user_payload) if opts.user_id && opts.user_payload %>
+  <% if opts.user_id && opts.user_payload -%>
+  <%= alias_id(opts.user_id) if opts.distinct_id -%>
+  <%= identify(opts.distinct_id || opts.user_id, opts.user_payload) %>
+  <% end %>
 </script>

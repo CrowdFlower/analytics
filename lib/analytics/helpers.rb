@@ -1,5 +1,9 @@
 module Analytics
   module Helpers
+    def alias_id(id)
+      wrapper "analytics.alias('#{id}');"
+    end
+
     def identify(user_id, payload)
       wrapper "analytics.identify(#{user_id.to_json}, #{payload.to_json}, _aopts);"
     end
@@ -7,17 +11,17 @@ module Analytics
     def group(company_id, payload)
       wrapper "analytics.group(#{company_id.to_json}, #{payload.to_json}, _aopts);"
     end
-    
+
     def track(event, properties, opts = {})
       selector = opts[:selector] ? "jQuery(\"#{opts[:selector]}\"), " : ""
       wrapper = opts[:tag] ? :javascript_tag : :raw
       wrapper self.send(wrapper, "analytics.track#{opts[:thing]}(#{selector}#{event.to_json}, #{properties.to_json}, _aopts);")
     end
-    
+
     def trackLink(selector, event, properties, opts = {})
       wrapper track(event, properties, {:thing => "Link", :selector => selector}.merge(opts))
     end
-    
+
     def trackForm(selector, event, properties, opts = {})
       wrapper track(event, properties, {:thing => "Form", :selector => selector}.merge(opts))
     end
