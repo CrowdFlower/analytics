@@ -110,19 +110,30 @@ describe "Analytics" do
       expect(Analytics.ss.track(:user_id => 1, :event => "Shit")).to be_false
     end
 
-    it "supports track and identity" do
-      class User
-        attr_reader :id, :identity_payload, :email
-        def initialize(id, payload)
-          @id = id
-          @email = "#{id}@crowdflower.com"
-          @identity_payload = payload
+    describe "track and identity" do
+      before do
+        class User
+          attr_reader :id, :identity_payload, :email
+          def initialize(id, payload)
+            @id = id
+            @email = "#{id}@crowdflower.com"
+            @identity_payload = payload
+          end
         end
+        @user = User.new(1, {})
       end
-      user = User.new(1, {})
-      Analytics.ss.should_receive(:identify).with(:user_id => user.id, :traits => {})
-      Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id)
-      expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user))
+
+      it "without context" do
+        Analytics.ss.should_receive(:identify).with(:user_id => @user.id, :traits => {}, :context => {})
+        Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{@user.id}@crowdflower.com"}, :user_id => @user.id, :context => {})
+        expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, @user))
+      end
+
+      it "with context" do
+        Analytics.ss.should_receive(:identify).with(:user_id => @user.id, :traits => {}, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
+        Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{@user.id}@crowdflower.com"}, :user_id => @user.id, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
+        expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, @user, { 'Marketo' => { marketoCookie: "somevalue" } }))
+      end
     end
 
     it "is initialized with secret" do
