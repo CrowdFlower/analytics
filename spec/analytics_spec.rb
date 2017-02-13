@@ -120,19 +120,21 @@ describe "Analytics" do
             @identity_payload = payload
           end
         end
-        @user = User.new(1, {})
       end
 
+      let(:user) { User.new(1, {}) }
+
       it "without context" do
-        Analytics.ss.should_receive(:identify).with(:user_id => @user.id, :traits => {}, :context => {})
-        Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{@user.id}@crowdflower.com"}, :user_id => @user.id, :context => {})
-        expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, @user))
+        expect(Analytics.ss).to receive(:identify).with(:user_id => user.id, :traits => {}, :context => {})
+        expect(Analytics.ss).to receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id, :context => {})
+        Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user)
+
       end
 
       it "with context" do
-        Analytics.ss.should_receive(:identify).with(:user_id => @user.id, :traits => {}, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
-        Analytics.ss.should_receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{@user.id}@crowdflower.com"}, :user_id => @user.id, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
-        expect(Analytics.ss.track_and_identify("Something", {:foo => "bar"}, @user, { 'Marketo' => { marketoCookie: "somevalue" } }))
+        expect(Analytics.ss).to receive(:identify).with(:user_id => user.id, :traits => {}, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
+        expect(Analytics.ss).to receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
+        Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user, { 'Marketo' => { marketoCookie: "somevalue" } })
       end
     end
 
