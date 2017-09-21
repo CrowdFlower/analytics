@@ -11,7 +11,7 @@
       window.analytics[method] = window.analytics.factory(method)
   };
 
-  <%- if opts.secret -%>
+  <%- if opts.analytics_url -%>
     (function() {
         var a = document.createElement("script");
         a.type = "text/javascript", a.async = !0, a.src = "<%= opts.analytics_url %>";

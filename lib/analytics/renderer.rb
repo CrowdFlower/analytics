@@ -6,7 +6,6 @@ module Analytics
     def initialize(template, opts = {})
       opts[:analytics_url] ||= Analytics.url
       opts[:global_options] ||= {}
-      opts[:secret] ||= Analytics.options[:secret]
       opts[:global_options][:exclude] = opts[:exclude] if opts[:exclude]
       @opts = OpenStruct.new(opts)
       @template = File.read(File.join(File.dirname(__FILE__), "../templates", template))
