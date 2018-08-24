@@ -113,28 +113,30 @@ describe "Analytics" do
     describe "track and identity" do
       before do
         class User
-          attr_reader :id, :identity_payload, :email
+          attr_reader :id, :identity_payload, :default_tracking_properties
           def initialize(id, payload)
             @id = id
-            @email = "#{id}@crowdflower.com"
             @identity_payload = payload
+            @default_tracking_properties = { team_name: payload[:team_name] }
           end
         end
       end
 
-      let(:user) { User.new(1, {}) }
+      let(:email) { "1@crowdflower.com" }
+      let(:team_name) { "Team 1" }
+      let(:user) { User.new(1, { email: email, team_name: team_name }) }
 
       it "without context" do
-        expect(Analytics.ss).to receive(:identify).with(:user_id => user.id, :traits => {}, :context => {})
-        expect(Analytics.ss).to receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id, :context => {})
-        Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user)
+        expect(Analytics.ss).to receive(:identify).with(:user_id => user.id, :traits => {:email => email, :team_name => team_name}, :context => {})
+        expect(Analytics.ss).to receive(:track).with(:event => "Something", :properties => {:email => email, :team_name => team_name, :foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id, :context => {})
+        Analytics.ss.track_and_identify("Something", {:email => email, :team_name => team_name, :foo => "bar"}, user)
 
       end
 
       it "with context" do
-        expect(Analytics.ss).to receive(:identify).with(:user_id => user.id, :traits => {}, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
-        expect(Analytics.ss).to receive(:track).with(:event => "Something", :properties => {:foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
-        Analytics.ss.track_and_identify("Something", {:foo => "bar"}, user, { 'Marketo' => { marketoCookie: "somevalue" } })
+        expect(Analytics.ss).to receive(:identify).with(:user_id => user.id, :traits => {:email => email, :team_name => team_name}, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
+        expect(Analytics.ss).to receive(:track).with(:event => "Something", :properties => {:email => email, :team_name => team_name, :foo => "bar", :email => "#{user.id}@crowdflower.com"}, :user_id => user.id, :context => { 'Marketo' => { marketoCookie: "somevalue" } })
+        Analytics.ss.track_and_identify("Something", {:email => email, :team_name => team_name, :foo => "bar"}, user, { 'Marketo' => { marketoCookie: "somevalue" } })
       end
     end
 
