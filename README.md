@@ -128,6 +128,10 @@ You can make a custom build of segment.io's javascript library, however it's a p
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
+Application list with `analytics` gem:
+* [Builder](https://github.com/CrowdFlower/CrowdFlower/blob/b5fe12140eb09906225e141eafe08a9a436c2aa6/projects/builder/Gemfile#L105)
+* [Make](https://github.com/CrowdFlower/CrowdFlower/blob/b5fe12140eb09906225e141eafe08a9a436c2aa6/projects/make/Gemfile#L128)
+
 ## Copyright
 
 Copyright (c) 2014 Chris Van Pelt. See LICENSE.txt for
