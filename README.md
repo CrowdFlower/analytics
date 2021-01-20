@@ -16,21 +16,21 @@ Analytics.init(:url => "//something.cloudfront.com/custom_build.js.gz") #Uses yo
 
 Analytics.configure(:secret => "abcdefg", :intercom_secret => "A2c4e0B1...") #In an initializer
 Analytics.init #In unicorn.rb
-Analytics.options[:intercom_secret] #Wherever you need secrets 
+Analytics.options[:intercom_secret] #Wherever you need secrets
 ```
 
 Now in the header of your application:
 
 ```ruby
 <%= Analytics.header(
-  user_id: 1, 
+  user_id: 1,
   user_payload: {
     email: "foo@bar.com",
     name: "Foo Bar",
     plan: "basic",
     created: "2014 10 22 12:23:14",
     balance: "90.32"
-  }, 
+  },
   exclude: ['Olark'],
   intercom_secret: "A2c4e0B1..."
 ) %>
@@ -56,11 +56,11 @@ If the Analytics is initialized with `:secret => "something"` the [analytics-rub
 Analytics.ss.track(:event => "Spent Money", :user_id => 32, :properties => {:revenue => 300})
 ```
 
-If `Analytics.init` was never called, all calls to `Analytics.ss.whatever` will return false. 
+If `Analytics.init` was never called, all calls to `Analytics.ss.whatever` will return false.
 
 ## Custom build of segment.io/analytics.js
 
-You can make a custom build of segment.io's javascript library, however it's a pain in the ass and you can use serverside tracking. 
+You can make a custom build of segment.io's javascript library, however it's a pain in the ass and you can use serverside tracking.
 
 1. Fork https://github.com/segmentio/analytics.js
 2. Fork https://github.com/segmentio/analytics.js-integrations
@@ -105,7 +105,7 @@ You can make a custom build of segment.io's javascript library, however it's a p
       appId: '900ddb390526bf805ee5f5b18b44b1bded27420d'
     }
   })
-  
+
   //Replay any queued analytics calls
   while (window.analytics && window.analytics.length > 0) {
     var args = window.analytics.shift();
@@ -119,7 +119,7 @@ You can make a custom build of segment.io's javascript library, however it's a p
 11. Put cloudfront in front of it for extra awesome.
 
 ## Contributing to analytics
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
 * Fork the project.
@@ -127,6 +127,10 @@ You can make a custom build of segment.io's javascript library, however it's a p
 * Commit and push until you are happy with your contribution.
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+Application list with `analytics` gem:
+* [Builder](https://github.com/CrowdFlower/CrowdFlower/blob/b5fe12140eb09906225e141eafe08a9a436c2aa6/projects/builder/Gemfile#L105)
+* [Make](https://github.com/CrowdFlower/CrowdFlower/blob/b5fe12140eb09906225e141eafe08a9a436c2aa6/projects/make/Gemfile#L128)
 
 ## Copyright
 
