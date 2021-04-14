@@ -107,7 +107,7 @@ describe "Analytics" do
 
   describe "server side" do
     it "doesnt blow up if not initialized" do
-      expect(Analytics.ss.track(:user_id => 1, :event => "Shit")).to be_false
+      expect(Analytics.ss.track(:user_id => 1, :event => "Shit")).to be false
     end
 
     describe "track and identity" do
