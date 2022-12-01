@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 gem "erubis"
-gem "faraday", "~> 0.9.2"
+gem "faraday", "~> 0.17"
+# gem "faraday", "~> 0.17.3"
 gem "analytics-ruby", "1.1.0"
 
 # Add dependencies to develop your gem here.
@@ -8,6 +9,6 @@ gem "analytics-ruby", "1.1.0"
 group :development do
   gem "rspec", "~> 2.14.0"
   gem "bundler", "~> 2.0"
-  gem "jeweler", "~> 2.3"
+  gem "juwelier", "~> 2.4"
   gem "simplecov", ">= 0"
 end

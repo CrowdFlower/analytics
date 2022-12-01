@@ -52,7 +52,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<analytics-ruby>, ["= 1.1.0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.14.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 2.0"])
+      s.add_development_dependency(%q<juwelier>, ["~> 2.0"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
     else
       s.add_dependency(%q<erubis>, [">= 0"])
@@ -60,7 +60,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<analytics-ruby>, ["= 1.1.0"])
       s.add_dependency(%q<rspec>, ["~> 2.14.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
-      s.add_dependency(%q<jeweler>, ["~> 2.0"])
+      s.add_dependency(%q<juwelier>, ["~> 2.0"])
       s.add_dependency(%q<simplecov>, [">= 0"])
     end
   else
@@ -69,7 +69,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<analytics-ruby>, ["= 1.1.0"])
     s.add_dependency(%q<rspec>, ["~> 2.14.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
-    s.add_dependency(%q<jeweler>, ["~> 2.0"])
+    s.add_dependency(%q<juwelier>, ["~> 2.0"])
     s.add_dependency(%q<simplecov>, [">= 0"])
   end
 end
